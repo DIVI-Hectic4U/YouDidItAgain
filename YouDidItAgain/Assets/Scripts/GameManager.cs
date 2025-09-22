@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
     }
     public void DecreaseScore() {
         popcount--;
-        if (popcount < 0) popcount = 0;
+        if (popcount < 0) TriggerGameOver1();
         UpdateScoreUI();
     }
 

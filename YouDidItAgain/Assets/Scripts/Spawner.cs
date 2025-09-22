@@ -83,10 +83,13 @@ public class Spawner : MonoBehaviour {
 
             float force = Random.Range(minForce, maxForce);
             fruit.GetComponent<Rigidbody>().AddForce(fruit.transform.up * force, ForceMode.Impulse);
-
+            ShortenDelay();
             yield return new WaitForSeconds(Random.Range(minSpawnDelay, maxSpawnDelay));
         }
     }
-
+    public void ShortenDelay() {
+        if (maxSpawnDelay < minSpawnDelay) return;
+        maxSpawnDelay = maxSpawnDelay - 0.002f;
+    }
 
 }
