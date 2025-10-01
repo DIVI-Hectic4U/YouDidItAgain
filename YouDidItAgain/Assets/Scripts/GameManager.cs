@@ -195,6 +195,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator ReloadSceneAfterDelay()
     {
         yield return null;  // Wait for 3 seconds
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
     }
 
