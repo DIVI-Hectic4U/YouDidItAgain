@@ -189,6 +189,8 @@ public class GameManager : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
         gameOverPanel.SetActive(true);
         endImage.SetActive(true);
+        yield return new WaitForSecondsRealtime(1f);
+        Time.timeScale = 0;
     }
     private IEnumerator ReloadSceneAfterDelay()
     {
