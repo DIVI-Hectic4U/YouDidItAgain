@@ -1073,6 +1073,8 @@ MonoBehaviour:
   sfx3: {fileID: 8300000, guid: b22249a2e183c194da962fdf6a00f6ae, type: 3}
   sfx4: {fileID: 8300000, guid: 2b1ef858ab47dd64fad82265d6e3af86, type: 3}
   sfx5: {fileID: 8300000, guid: 5d0e8059bcd445f43b3d0a1e7e734bd0, type: 3}
+  sfx6: {fileID: 8300000, guid: b33659aa69905c04ca372ca7f08f5328, type: 3}
+  sfx7: {fileID: 8300000, guid: d6a4d03846578334f9e04a2eee69635c, type: 3}
   floorCollider: {fileID: 1429696301}
   destroyDelay: 1
 --- !u!114 &727997521

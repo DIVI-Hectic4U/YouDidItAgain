@@ -44,6 +44,7 @@ public class Orb : MonoBehaviour {
         }
         else {
             Debug.Log("Wrong");
+            GM.GetComponent<Effectsm>().GameOversound();
             GM.TriggerGameOver1();
            
         }
