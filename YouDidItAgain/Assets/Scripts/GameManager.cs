@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     Renderer renderer1;
     Renderer renderer2;
     Renderer renderer3;
+    private bool gameOver = false;
     public float intensity = 3f;
     private void Start()
     {
@@ -129,7 +130,11 @@ public class GameManager : MonoBehaviour
     }
     public void DecreaseScore() {
         popcount--;
-        if (popcount < 0) TriggerGameOver1();
+        if (popcount < 0) {
+            popcount = 0;
+            TriggerGameOver1();
+
+        }
         UpdateScoreUI();
     }
 
@@ -148,7 +153,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScoreUI()
     {
-        if (scoreText != null)
+        if (scoreText != null && gameOver==false)
         {
 
             scoreText.text = "Score: " + popcount.ToString();
@@ -165,6 +170,7 @@ public class GameManager : MonoBehaviour
     public void TriggerGameOver1()
     {
         Time.timeScale = 0;
+        gameOver = true;
         StartCoroutine(GameOverScreen());
         //StartCoroutine(ReloadSceneAfterDelay());
     }
@@ -173,6 +179,10 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator GameOverScreen() {
         yield return new WaitForSecondsRealtime(3f);
+        if (scoreText != null) {
+            popcount = Mathf.Max(0, popcount);
+            scoreText.text = "Your Score: " + popcount.ToString();
+        }
         Time.timeScale = 1;
         // Wait for 3 seconds
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
