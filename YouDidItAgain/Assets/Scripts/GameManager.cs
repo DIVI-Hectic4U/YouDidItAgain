@@ -164,14 +164,24 @@ public class GameManager : MonoBehaviour
     }
     public void TriggerGameOver1()
     {
-        gameOverPanel.SetActive(true);
-        endImage.SetActive(true);
+        Time.timeScale = 0;
+        StartCoroutine(GameOverScreen());
+        //StartCoroutine(ReloadSceneAfterDelay());
+    }
+    public void RestartGame() {
         StartCoroutine(ReloadSceneAfterDelay());
     }
-
+    private IEnumerator GameOverScreen() {
+        yield return new WaitForSecondsRealtime(3f);
+        Time.timeScale = 1;
+        // Wait for 3 seconds
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
+        gameOverPanel.SetActive(true);
+        endImage.SetActive(true);
+    }
     private IEnumerator ReloadSceneAfterDelay()
     {
-        yield return new WaitForSeconds(3f);  // Wait for 3 seconds
+        yield return new WaitForSecondsRealtime(3f);  // Wait for 3 seconds
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
     }
 
