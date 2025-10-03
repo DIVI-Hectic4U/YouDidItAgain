@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel; // Assign this in Inspector
     public Canvas canvas;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI PersonalBestScore;
     public Image fadeImage;
     public GameObject endImage;
     private int i = 1;
@@ -35,6 +36,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(ToggleChange());
+        if (PlayerPrefs.GetInt("PersonalBest", 0) == 0) {
+            PersonalBestScore.gameObject.SetActive(false);
+        } else {
+            PersonalBestScore.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest", 0).ToString();
+        }
     }
 
     private void Awake()
@@ -157,6 +163,9 @@ public class GameManager : MonoBehaviour
         {
 
             scoreText.text = "Score: " + popcount.ToString();
+            if (popcount > PlayerPrefs.GetInt("PersonalBest", 0)) {
+                PersonalBestScore.text = "Personal Best: "+popcount.ToString();
+            }
         }
     }
 
@@ -182,7 +191,11 @@ public class GameManager : MonoBehaviour
         if (scoreText != null) {
             popcount = Mathf.Max(0, popcount);
             scoreText.color = Color.black;
+            PersonalBestScore.color = Color.black;
             scoreText.text = "Your Score: " + popcount.ToString();
+            if (popcount > PlayerPrefs.GetInt("PersonalBest", 0)) {
+                PlayerPrefs.SetInt("PersonalBest", popcount);
+            }
         }
         Time.timeScale = 1;
         // Wait for 3 seconds
