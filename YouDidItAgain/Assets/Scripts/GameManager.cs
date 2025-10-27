@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel; // Assign this in Inspector
     public Canvas canvas;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI PersonalBestScore;
     public Image fadeImage;
     public GameObject endImage;
     private int i = 1;
@@ -30,10 +31,16 @@ public class GameManager : MonoBehaviour
     Renderer renderer1;
     Renderer renderer2;
     Renderer renderer3;
+    private bool gameOver = false;
     public float intensity = 3f;
     private void Start()
     {
         StartCoroutine(ToggleChange());
+        if (PlayerPrefs.GetInt("PersonalBest", 0) == 0) {
+            PersonalBestScore.gameObject.SetActive(false);
+        } else {
+            PersonalBestScore.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest", 0).ToString();
+        }
     }
 
     private void Awake()
@@ -129,7 +136,11 @@ public class GameManager : MonoBehaviour
     }
     public void DecreaseScore() {
         popcount--;
-        if (popcount < 0) popcount = 0;
+        if (popcount < 0) {
+            //popcount = 0;
+            TriggerGameOver1();
+
+        }
         UpdateScoreUI();
     }
 
@@ -148,10 +159,13 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScoreUI()
     {
-        if (scoreText != null)
+        if (scoreText != null && gameOver==false)
         {
 
             scoreText.text = "Score: " + popcount.ToString();
+            if (popcount > PlayerPrefs.GetInt("PersonalBest", 0)) {
+                PersonalBestScore.text = "Personal Best: "+popcount.ToString();
+            }
         }
     }
 
@@ -164,14 +178,37 @@ public class GameManager : MonoBehaviour
     }
     public void TriggerGameOver1()
     {
-        gameOverPanel.SetActive(true);
-        endImage.SetActive(true);
+        gameOver = true;
+        Time.timeScale = 0;
+        StartCoroutine(GameOverScreen());
+        //StartCoroutine(ReloadSceneAfterDelay());
+    }
+    public void RestartGame() {
         StartCoroutine(ReloadSceneAfterDelay());
     }
-
+    private IEnumerator GameOverScreen() {
+        yield return new WaitForSecondsRealtime(1.5f);
+        if (scoreText != null) {
+            popcount = Mathf.Max(0, popcount);
+            scoreText.color = Color.black;
+            PersonalBestScore.color = Color.black;
+            scoreText.text = "Your Score: " + popcount.ToString();
+            if (popcount > PlayerPrefs.GetInt("PersonalBest", 0)) {
+                PlayerPrefs.SetInt("PersonalBest", popcount);
+            }
+        }
+        Time.timeScale = 1;
+        // Wait for 3 seconds
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
+        gameOverPanel.SetActive(true);
+        endImage.SetActive(true);
+        yield return new WaitForSecondsRealtime(1f);
+        Time.timeScale = 0;
+    }
     private IEnumerator ReloadSceneAfterDelay()
     {
-        yield return new WaitForSeconds(3f);  // Wait for 3 seconds
+        yield return null;  // Wait for 3 seconds
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload the current scene
     }
 

@@ -8,7 +8,7 @@ public class Effectsm : MonoBehaviour
     public GameObject GreenHit;
     public GameObject YellowHit;
     public AudioSource src;
-    public AudioClip sfx1, sfx2, sfx3, sfx4, sfx5;
+    public AudioClip sfx1, sfx2, sfx3, sfx4, sfx5,sfx6,sfx7;
     public Collider floorCollider;
     public float destroyDelay = 2f;
 
@@ -22,6 +22,7 @@ public class Effectsm : MonoBehaviour
                 if (hit.collider.GetComponent<Orb>() == null) {
                     // Spawn default basicHit on floor
                     GameObject effect = Instantiate(basicHit, hit.point, Quaternion.identity);
+                    playsound2();
                     Destroy(effect, destroyDelay);
                 }
             }
@@ -55,8 +56,8 @@ public class Effectsm : MonoBehaviour
                 break;
             default:
                 effect = basicHit;
-                //src.clip = sfx5;
-                //src.Play();
+                src.clip = sfx7;
+                src.Play();
                 break;
         }
 
@@ -67,6 +68,14 @@ public class Effectsm : MonoBehaviour
     }
     public void playsound() {
         src.clip = sfx5;
+        src.Play();
+    }
+    public void playsound2() {
+        src.clip = sfx7;
+        src.Play();
+    }
+    public void GameOversound() {
+        src.clip = sfx6;
         src.Play();
     }
 }
